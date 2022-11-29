@@ -1,9 +1,11 @@
-package com.br.cursodioquebec.model;
+package com.br.cursodioquebec.controller.dto;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDateTime;
 
-
-public class ParkingModel {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ParkingDTO {
 
     private String id;
     private String licese;
@@ -13,19 +15,6 @@ public class ParkingModel {
     private LocalDateTime entryDate;
     private LocalDateTime exitDate;
     private Double bill;
-
-
-    public ParkingModel(String id, String licese, String state, String model, String color) {
-        this.id = id;
-        this.licese = licese;
-        this.state = state;
-        this.model = model;
-        this.color = color;
-    }
-
-    public ParkingModel() {
-
-    }
 
     public String getId() {
         return id;
