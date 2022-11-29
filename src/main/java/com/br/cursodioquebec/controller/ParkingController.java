@@ -1,14 +1,14 @@
 package com.br.cursodioquebec.controller;
 
+import com.br.cursodioquebec.controller.dto.ParkingCreateDTO;
 import com.br.cursodioquebec.controller.dto.ParkingDTO;
 import com.br.cursodioquebec.controller.mapper.ParkingMapper;
 import com.br.cursodioquebec.model.ParkingModel;
 import com.br.cursodioquebec.service.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +30,20 @@ public class ParkingController {
         List<ParkingModel> parkingList = parkingService.findAll();
         List<ParkingDTO> result = parkingMapper.toParkingDTOList(parkingList);
         return ResponseEntity.ok(result) ;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ParkingDTO> findById(@PathVariable String id){
+        ParkingModel parkingRegistry = parkingService.findById(id);
+        ParkingDTO result = parkingMapper.toParkingDTO(parkingRegistry);
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping()
+    public ResponseEntity<ParkingDTO> create(@RequestBody ParkingCreateDTO parkingCreateDTODTO){
+        var parkingCreate =  parkingMapper.toParkingCreate(parkingCreateDTODTO);
+        var parkingRegistry = parkingService.save(parkingCreate);
+        var result = parkingMapper.toParkingDTO(parkingRegistry);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 }
