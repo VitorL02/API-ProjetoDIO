@@ -5,6 +5,7 @@ import com.br.cursodioquebec.controller.dto.ParkingDTO;
 import com.br.cursodioquebec.controller.mapper.ParkingMapper;
 import com.br.cursodioquebec.model.ParkingModel;
 import com.br.cursodioquebec.service.ParkingService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/parking")
+@Api(tags ="Parking Controller")
 public class ParkingController {
 
     private final ParkingService parkingService;
