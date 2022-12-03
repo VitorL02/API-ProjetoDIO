@@ -2,17 +2,17 @@ package com.br.cursodioquebec.controller.dto;
 
 //Esse dto foi criado para limitar os campos que serão inseridos
 public class ParkingCreateDTO {
-    private String licese;
+    private String license;
     private String state;
     private String model;
     private String color;
 
-    public String getLicese() {
-        return licese;
+    public String getLicense() {
+        return license;
     }
 
-    public void setLicese(String licese) {
-        this.licese = licese;
+    public void setLicense(String license) {
+        this.license = license;
     }
 
     public String getState() {

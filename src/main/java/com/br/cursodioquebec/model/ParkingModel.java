@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public class ParkingModel {
 
     private String id;
-    private String licese;
+    private String license;
     private String state;
     private String model;
     private String color;
@@ -15,9 +15,9 @@ public class ParkingModel {
     private Double bill;
 
 
-    public ParkingModel(String id, String licese, String state, String model, String color) {
+    public ParkingModel(String id, String license, String state, String model, String color) {
         this.id = id;
-        this.licese = licese;
+        this.license = license;
         this.state = state;
         this.model = model;
         this.color = color;
@@ -35,12 +35,12 @@ public class ParkingModel {
         this.id = id;
     }
 
-    public String getLicese() {
-        return licese;
+    public String getLicense() {
+        return license;
     }
 
-    public void setLicese(String licese) {
-        this.licese = licese;
+    public void setLicense(String license) {
+        this.license = license;
     }
 
     public String getState() {

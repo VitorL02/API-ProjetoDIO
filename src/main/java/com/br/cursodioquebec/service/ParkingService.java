@@ -1,5 +1,6 @@
 package com.br.cursodioquebec.service;
 
+import com.br.cursodioquebec.exception.ParkingNotFoundException;
 import com.br.cursodioquebec.model.ParkingModel;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,14 +15,7 @@ public class ParkingService {
 
     private static Map<String,ParkingModel> parkingMap = new HashMap();
 
-    static {
-        var id = getUUID();
-        var id1 = getUUID();
-        ParkingModel parking = new ParkingModel(id,"DDSAMMASD","MG","CELTA","AZUL");
-        ParkingModel parking1 = new ParkingModel(id1,"DDSAMMASD","MG","GOL","PRETO");
-        parkingMap.put(id,parking);
-        parkingMap.put(id1,parking1);
-    }
+
 
     @GetMapping
     public List<ParkingModel> findAll(){
@@ -30,7 +24,18 @@ public class ParkingService {
 
 
     public ParkingModel findById(String id){
-        return parkingMap.get(id);
+
+        ParkingModel parkingModel = parkingMap.get(id);
+        if(parkingModel == null){
+            throw  new ParkingNotFoundException(id);
+        }
+        return parkingModel;
+    }
+
+    public void delete(String id){
+        ParkingModel parking = findById(id);
+        if (parking == null)  throw new ParkingNotFoundException(id);
+        parkingMap.remove(id);
     }
 
     private static String getUUID() {
@@ -43,5 +48,19 @@ public class ParkingService {
         parkingCreate.setEntryDate(LocalDateTime.now());
         parkingMap.put(uuid,parkingCreate);
         return parkingCreate;
+    }
+
+    public ParkingModel update(String id, ParkingModel parkingUpdate) {
+        ParkingModel parkingResult = findById(id);
+        if(parkingResult == null ) throw new ParkingNotFoundException(id);
+        parkingResult.setColor(parkingUpdate.getColor());
+        return parkingResult;
+    }
+
+    public ParkingModel exit(String id) {
+        ParkingModel parkingResult = findById(id);
+        if(parkingResult == null ) throw new ParkingNotFoundException(id);
+        parkingResult.setExitDate(LocalDateTime.now());
+        return parkingResult;
     }
 }

@@ -6,7 +6,6 @@ import com.br.cursodioquebec.controller.mapper.ParkingMapper;
 import com.br.cursodioquebec.model.ParkingModel;
 import com.br.cursodioquebec.service.ParkingService;
 import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,11 +40,33 @@ public class ParkingController {
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<ParkingDTO> create(@RequestBody ParkingCreateDTO parkingCreateDTODTO){
         var parkingCreate =  parkingMapper.toParkingCreate(parkingCreateDTODTO);
         var parkingRegistry = parkingService.save(parkingCreate);
         var result = parkingMapper.toParkingDTO(parkingRegistry);
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteById(@PathVariable String id){
+        parkingService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ParkingDTO> update(@PathVariable String id, @RequestBody ParkingCreateDTO parkingCreateDTODTO){
+        var parkingCreate =  parkingMapper.toParkingCreate(parkingCreateDTODTO);
+        var parkingRegistry = parkingService.update(id,parkingCreate);
+        var result = parkingMapper.toParkingDTO(parkingRegistry);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<ParkingDTO> exit(@PathVariable String id){
+        var parkingRegistry = parkingService.exit(id);
+        var result = parkingMapper.toParkingDTO(parkingRegistry);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 }
