@@ -2,9 +2,9 @@ package com.br.cursodioquebec.service;
 
 import com.br.cursodioquebec.exception.ParkingNotFoundException;
 import com.br.cursodioquebec.model.ParkingModel;
+import com.br.cursodioquebec.repository.ParkingRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -13,29 +13,28 @@ import java.util.stream.Collectors;
 @Service
 public class ParkingService {
 
-    private static Map<String,ParkingModel> parkingMap = new HashMap();
 
+    private final ParkingRepository parkingRepository;
+
+    public ParkingService(ParkingRepository parkingRepository) {
+        this.parkingRepository = parkingRepository;
+    }
 
 
     @GetMapping
     public List<ParkingModel> findAll(){
-        return parkingMap.values().stream().collect(Collectors.toList());
+        return parkingRepository.findAll();
     }
 
 
     public ParkingModel findById(String id){
-
-        ParkingModel parkingModel = parkingMap.get(id);
-        if(parkingModel == null){
-            throw  new ParkingNotFoundException(id);
-        }
-        return parkingModel;
+        return parkingRepository.findById(id).orElseThrow( () -> new ParkingNotFoundException(id));
     }
 
     public void delete(String id){
         ParkingModel parking = findById(id);
         if (parking == null)  throw new ParkingNotFoundException(id);
-        parkingMap.remove(id);
+        parkingRepository.deleteById(id);
     }
 
     private static String getUUID() {
@@ -46,7 +45,7 @@ public class ParkingService {
         String uuid = getUUID();
         parkingCreate.setId(uuid);
         parkingCreate.setEntryDate(LocalDateTime.now());
-        parkingMap.put(uuid,parkingCreate);
+        parkingRepository.save(parkingCreate);
         return parkingCreate;
     }
 
@@ -54,6 +53,12 @@ public class ParkingService {
         ParkingModel parkingResult = findById(id);
         if(parkingResult == null ) throw new ParkingNotFoundException(id);
         parkingResult.setColor(parkingUpdate.getColor());
+        parkingResult.setExitDate(parkingUpdate.getExitDate());
+        parkingResult.setModel(parkingUpdate.getModel());
+        parkingResult.setState(parkingUpdate.getState());
+        parkingResult.setBill(parkingUpdate.getBill());
+        parkingResult.setEntryDate(parkingUpdate.getEntryDate());
+        parkingRepository.save(parkingResult);
         return parkingResult;
     }
 

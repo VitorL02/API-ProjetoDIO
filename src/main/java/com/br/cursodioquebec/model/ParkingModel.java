@@ -1,10 +1,14 @@
 package com.br.cursodioquebec.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 
+@Entity
 public class ParkingModel {
 
+    @Id
     private String id;
     private String license;
     private String state;
